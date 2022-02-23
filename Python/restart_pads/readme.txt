@@ -1,31 +1,29 @@
-Для установки нужно сделать это:
-# установить последнюю версию python отсюда:
+1) install python from
 https://www.python.org/
 
-# перейти в директорию с программой
+# cd to app dir
 cd ../mfc_pads
 
-# установить зависимости для проекта
+# install requirements.txt
 pip3 install -r requirements.txt
 
-# установить nmap
-# для linux:
+# install nmap
+# for linux:
 sudo dnf install nmap
-# для windows:
+# for windows:
 https://nmap.org/download.html
-# ищи строки
+# find strs
 Latest stable release self-installer
 Latest Npcap release self-installer
-# добавить в path винды путь до nmap. смотри тут первый ответ:
+# add to win path nmap direcory. checkout here:
 https://stackoverflow.com/questions/15335753/nmap-not-found-class-nmap-nmap-portscannererror
 
-# поменять логин и пароль для входа в cisco тут:
+# change vars here:
 ../mfc_pads/config/conf.ini
 
-# запустить основной файл:
+# startup main file:
 python main.py
 
-# ввести имя МФЦ отсюда:
-http://mfc.ps.local/view/
+# type place name from test db
 
 PROFIT
