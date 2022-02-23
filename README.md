@@ -1,2 +1,2 @@
 - My resume
-- Check dronpiton.ru for more info
+- Check https://dronpiton.ru for more info
