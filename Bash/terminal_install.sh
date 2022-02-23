@@ -14,7 +14,7 @@ function get_disk_info {
                 # get disk size
                 get_size=$(lsblk $item -o SIZE | head -n 2 | tail -n 1)
                 # show path + siza
-                printf "%s" $iter ') ' $item ' Размер диска: ' $get_size
+                printf "%s" $iter ') ' $item ' Disk size: ' $get_size
                 
                 iter=$(expr $iter + 1)
                 printf "\n"
