@@ -1,0 +1,14 @@
+---
+- name: Get hostname
+  postgresql_query:
+    db: cp_schools
+    login_host: 1.1.1.1
+    login_user: user
+    login_password: pass,
+    query: select s.one, d.two from some_table s join two d on s.district = d.district where some_column like ('{{ '.'.join(ansible_facts.default_ipv4.address.split('.')[0:3]) }}.%') and some_column is not null;
+  delegate_to: localhost
+  register: pg_out
+
+- name: Set hostname
+  hostname:
+    name: "{{ pg_out.query_result[0].school.lower() }}-proxy.{{ pg_out.query_result[0].domain.lower() }}"

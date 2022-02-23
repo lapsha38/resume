@@ -1,0 +1,5 @@
+---
+- name: Copy a "localtime" file
+  copy:
+    src: /usr/share/zoneinfo/Europe/Moscow
+    dest: /etc/localtime

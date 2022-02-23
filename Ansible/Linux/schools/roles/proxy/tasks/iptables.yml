@@ -1,0 +1,133 @@
+---
+- name: Enable iptables
+  systemd:
+    name: iptables
+    state: started
+    enabled: yes
+
+- name: Flush iptables
+  iptables:
+    flush: yes
+
+- name: Allow tcp connections nfs
+  iptables:
+    chain: INPUT
+    protocol: tcp
+    destination_port: "{{ item }}"
+    jump: ACCEPT
+    comment: allow tcp nfs connect
+  loop:
+    - 110
+    - 111
+    - 2049
+
+- name: Allow udp connections nfs
+  iptables:
+    chain: INPUT
+    protocol: udp
+    destination_port: "{{ item }}"
+    jump: ACCEPT
+    comment: allow udp nfs connect
+  loop:
+    - 110
+    - 111
+    - 2049
+
+- name: Allow tcp connections netport-id
+  iptables:
+    chain: INPUT
+    protocol: tcp
+    destination_port: 3129
+    jump: ACCEPT
+    comment: allow tcp netport-id connect
+
+- name: Allow tcp connections icpv2
+  iptables:
+    chain: INPUT
+    protocol: tcp
+    destination_port: 3130
+    jump: ACCEPT
+    comment: allow tcp icpv2 connect
+
+- name: Allow tcp connections zabbix-agent
+  iptables:
+    chain: INPUT
+    protocol: tcp
+    destination_port: 10050
+    jump: ACCEPT
+    comment: allow tcp zabbix-agent connect
+
+- name: SNMP rule
+  iptables:
+    chain: INPUT
+    in_interface: eth0
+    protocol: udp
+    destination_port: 161
+    jump: ACCEPT
+    comment: allow udp SNMP connect
+
+- name: GRE rule
+  iptables:
+    chain: INPUT
+    protocol: gre
+    jump: ACCEPT
+    comment: allow gre connect
+
+- name: Forward port 80>3129, 443>3130
+  iptables:
+    table: nat
+    chain: PREROUTING
+    in_interface: wccp0
+    protocol: tcp
+    match: tcp
+    destination_port: "{{ item.from }}"
+    jump: REDIRECT
+    to_ports: "{{ item.to }}"
+    comment: Redirect 80>3129 443>3130
+  with_items:
+    - { from: '80', to: '3129' }
+    - { from: '443', to: '3130' }
+
+- name: Allow related and established connections
+  iptables:
+    chain: INPUT
+    ctstate: ESTABLISHED,RELATED
+    jump: ACCEPT
+
+- name: PING rule
+  iptables:
+    chain: INPUT
+    protocol: icmp
+    jump: ACCEPT
+
+- name: lo rule
+  iptables:
+    chain: INPUT
+    in_interface: lo
+    jump: ACCEPT
+
+- name: Forward icmp rule
+  iptables:
+    chain: FORWARD
+    reject_with: icmp-host-prohibited
+    jump: REJECT
+
+- name: SSH rule
+  iptables:
+    chain: INPUT
+    protocol: tcp
+    ctstate: NEW
+    destination_port: 22
+    jump: ACCEPT
+    comment: allow tcp ssh connect
+
+- name: ICMP rule
+  iptables:
+    chain: INPUT
+    reject_with: icmp-host-prohibited
+    jump: REJECT
+
+- name: Save current state of the firewall in system file
+  community.general.iptables_state:
+    state: saved
+    path: /etc/sysconfig/iptables

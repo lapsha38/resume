@@ -1,0 +1,8 @@
+---
+- name: Make bash colorful
+  lineinfile:
+    path: .bashrc
+    line: export PS1="\[\e[31;1m\][\u@\[\e[34;1m\]$(hostname) \W]# \[\e[0m\]"
+
+- name: Change root password
+  shell: echo "it is a strong pass" | passwd --stdin root

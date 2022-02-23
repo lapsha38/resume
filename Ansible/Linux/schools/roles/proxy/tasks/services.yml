@@ -1,0 +1,23 @@
+---
+- name: Enable system services
+  systemd:
+    name: "{{ item }}"
+    state: restarted
+    enabled: yes
+    daemon_reload: yes
+  with_items:
+    - ntpd
+    - zabbix-agent
+    - yum-cron
+    - squid
+    - nfs-server
+    - system_agent
+    - log_router
+    - wccp0
+
+- name: Stop service firewalld
+  systemd:
+    name: firewalld
+    state: stopped
+    enabled: no
+  ignore_errors: yes

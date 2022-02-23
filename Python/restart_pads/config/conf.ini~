@@ -1,0 +1,12 @@
+[MFC_DB]
+host_ip = 10.48.201.51
+bd_user = mfcadmin
+bd_pass = 69ukfererk.
+db = mfc
+
+[CISCO]
+username = a.golubev
+password = a4cy8#dds
+
+[91_VLAN_PADS]
+pads = Центр госуслуг района Лефортово

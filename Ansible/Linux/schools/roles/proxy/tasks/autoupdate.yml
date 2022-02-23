@@ -1,0 +1,5 @@
+---
+- name: Copy yum-cron config
+  copy:
+    src: files/autoupdate/yum-cron.conf
+    dest: /etc/yum/yum-cron.conf

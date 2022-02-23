@@ -1,0 +1,16 @@
+---
+- name: Create /etc/zabbix
+  file:
+    path: /etc/zabbix
+    state: directory
+
+- name: Copy multiple files
+  copy: src={{ item.src }} dest={{ item.dest }}
+  with_items:
+    - { src: 'files/zabbix/zabbix-agent-3.4.6-1.el7.x86_64.rpm', dest: '/tmp' }
+    - { src: 'files/zabbix/zabbix_agentd.conf', dest: '/etc/zabbix/zabbix_agentd.conf' }
+
+- name: Install zabbix-agent
+  yum:
+     name: /tmp/zabbix-agent-3.4.6-1.el7.x86_64.rpm
+     state: present

@@ -1,0 +1,51 @@
+---
+- name: Add ssh keys to host
+  include_tasks: users.yml
+
+- name: Config DNS
+  include_tasks: dns.yml
+
+- name: Install dependencies
+  include_tasks: pkg.yml
+
+- name: Disable selinux
+  include_tasks: selinux.yml
+
+- name: Set Moscow time
+  include_tasks: localtime.yml
+
+- name: Set hostname
+  include_tasks: hostname.yml
+
+- name: Congig autoupdate
+  include_tasks: autoupdate.yml
+
+- name: Config kernel
+  include_tasks: sysctl.yml 
+
+- name: Confir wcc0
+  include_tasks: wccp.yml
+
+- name: Config squid
+  include_tasks: squid.yml
+
+- name: Config iptables
+  include_tasks: iptables.yml
+
+- name: Copy LogRouter files
+  include_tasks: logrouter.yml
+
+- name: Config Zabbix
+  include_tasks: zabbix.yml
+  
+- name: Enable services
+  include_tasks: services.yml
+  
+- name: Config nfs share
+  include_tasks: nfs.yml
+
+- name: Set password and other stuff
+  include_tasks: postinstall.yml
+
+- name: Reboot host
+  include_tasks: reboot.yml

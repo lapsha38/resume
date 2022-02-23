@@ -1,0 +1,52 @@
+---
+- name: Create /home/squid
+  file:
+    path: /home/squid
+    state: directory 
+
+- name: Copy squid CA
+  copy:
+    src: files/squid/squidCA.pem
+    dest: /etc/squid/squidCA.pem
+    owner: squid
+    group: squid
+
+- name: Certgen
+  shell: /usr/lib64/squid/security_file_certgen -c -s /var/lib/ssl_db -M 20MB
+  ignore_errors: yes
+
+- name: change /var/lib/ssl_db owner to squid user
+  file:
+    dest: "{{ item }}"
+    owner: squid
+    group: squid
+  loop:
+    - /var/lib/ssl_db
+    - /home/squid
+
+- name: Create missing swap directories
+  shell: squid -z
+
+- name: Create dirs
+  file:
+    path: "{{ item }}"
+    state: directory
+  loop:
+    - /home/squid/log_router/adapters
+    - /home/squid/log_router/logs
+    - /home/squid/log_router/db
+    
+- name: pg select network
+  postgresql_query:
+    db: cp_schools
+    login_host: 10.48.201.51
+    login_user: dbadmin
+    login_password: hfpfyjpf,
+    query: select some_column from some_table where some_column like ('{{ '.'.join(ansible_facts.default_ipv4.address.split('.')[0:3]) }}.%') and some_column is not null;
+  delegate_to: localhost
+  register: pg_out
+
+- name: Make squid.conf
+  template:
+    src: files/templates/squid.j2
+    dest: /etc/squid/squid.conf

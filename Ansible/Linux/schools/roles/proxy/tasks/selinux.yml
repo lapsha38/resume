@@ -1,0 +1,9 @@
+---
+- name: Put SELinux in permissive mode (current session)
+  selinux:
+    policy: targeted
+    state: permissive
+
+- name: Disable SELinux
+  selinux:
+    state: disabled

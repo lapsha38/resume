@@ -1,0 +1,25 @@
+---
+- name: Check the uptime before reboot
+  shell: uptime
+  register: UPTIME_BF
+
+- debug: msg={{UPTIME_BF.stdout}}
+
+- name: Reboot server and stop polling.
+  shell: reboot
+  async: 10
+  poll: 0
+
+- name: Wait for server to finish reboot
+  wait_for:
+    port: "{{ (ansible_port|default(ansible_ssh_port))|default(22) }}"
+    host: '{{ (ansible_ssh_host|default(ansible_host))|default(inventory_hostname) }}'
+    search_regex: OpenSSH
+    delay: 180
+  delegate_to: localhost
+
+- name: Check the uptime after reboot
+  shell: uptime
+  register: UPTIME_AF
+
+- debug: msg={{UPTIME_AF.stdout}}

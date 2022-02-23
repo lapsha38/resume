@@ -1,0 +1,53 @@
+---
+- name: Upgrade all packages
+  yum:
+    name: '*'
+    state: latest
+
+- name: Install yum-utils and epel-release
+  yum:
+    name: "{{ item }}"
+  loop:
+    - yum-utils
+    - epel-release
+
+- name: Install squid repo
+  yum:
+    name: http://ngtech.co.il/repo/centos/7/squid-repo-1-1.el7.centos.noarch.rpm
+    state: present
+    validate_certs: no
+
+- name: Install a list of packages with a list variable
+  yum:
+    name: "{{ item }}"
+  loop:
+    - bash-completion
+    - bind-utils
+    - net-tools
+    - telnet
+    - tcpdump
+    - hyperv-daemons
+    - lsof
+    - wget
+    - nano
+    - vim
+    - bzip2
+    - krb5-workstation
+    - python3
+    - python3-pip
+    - python3-devel
+    - python-setuptools
+    - libselinux-python
+    - ntp
+    - libtool-ltdl
+    - perl
+    - iptables-services
+    - glibc.i686
+    - ncurses-libs.i686
+    - psmisc
+    - libecap
+    - libecap-devel
+    - squid
+    - squid-helpers
+    - yum-cron
+    - nfs-utils

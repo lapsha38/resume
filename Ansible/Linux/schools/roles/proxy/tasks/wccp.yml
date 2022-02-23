@@ -1,0 +1,18 @@
+---
+- name: Configure ifcfg-wccp0
+  template:
+    src: files/templates/ifup-wccp0.j2
+    dest: /etc/ifup-wccp0
+    owner: root
+    group: root
+    mode: '0755'
+
+- name: Permissions for /etc/ifup-wccp0
+  file:
+    path: /etc/ifup-wccp0
+    mode: '0755'
+
+- name: Configure wccp0 service
+  template:
+    src: files/templates/wccp0_systemd.j2
+    dest: /etc/systemd/system/wccp0.service

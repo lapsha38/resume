@@ -1,0 +1,30 @@
+---
+- name: Install 
+  hosts: install_webdav
+  tasks:
+
+  - name: Copy WebDav
+    win_copy:
+      src: files/WebDav.FileSystemStorage-0.1.0_x64.exe
+      dest: C:\Windows\Temp
+
+  - name: Install WebDav
+    win_command: cmd.exe
+    args:
+      stdin: C:\Windows\Temp\WebDav.FileSystemStorage-0.1.0_x64.exe -norestart -passive -quiet
+
+  - name: Change config file
+    win_template:
+      src: appsettings.j2
+      dest: C:\Program Files\WebDav.FileSystemStorage\appsettings.json
+
+  - name: Restart WebDav service
+    win_service:
+      name: WebDavFileSystemStorage
+      state: restarted
+      start_mode: auto
+
+  - name: Remove WebDav installer
+    win_file:
+      path: C:\Windows\Temp\WebDav.FileSystemStorage-0.1.0_x64.exe
+      state: absent

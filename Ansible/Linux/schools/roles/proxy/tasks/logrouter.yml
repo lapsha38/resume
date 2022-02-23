@@ -1,0 +1,22 @@
+---
+- name: Copy multiple files for log_router and system_agent
+  copy: src={{ item.src }} dest={{ item.dest }}
+  with_items:
+    - { src: 'files/log_router/log_router', dest: '/usr/bin/log_router' }
+    - { src: 'files/log_router/linux_system_agent', dest: '/usr/bin/linux_system_agent' }
+    - { src: 'files/log_router/51Degrees-LiteV3.2.dat', dest: '/home/squid/log_router/adapters/51Degrees-LiteV3.2.dat' }
+    - { src: 'files/log_router/libsquid.so', dest: '/home/squid/log_router/adapters/libsquid.so' }
+    - { src: 'files/log_router/libc++.so.1', dest: '/lib64/libc++.so.1' }
+    - { src: 'files/log_router/libc++abi.so.1', dest: '/lib64/libc++abi.so.1' }
+    - { src: 'files/log_router/system_agent.service', dest: '/usr/lib/systemd/system/system_agent.service' }
+    - { src: 'files/log_router/log_router.service', dest: '/usr/lib/systemd/system/log_router.service' }
+    - { src: 'files/log_router/log_router.json', dest: '/etc/log_router.json' }
+    - { src: 'files/log_router/avilex.json', dest: '/etc/avilex.json' }
+
+- name: Change files permissions
+  file:
+    path: "{{ item }}"
+    mode: '0755'
+  loop:
+    - '/usr/bin/log_router'
+    - '/usr/bin/linux_system_agent'

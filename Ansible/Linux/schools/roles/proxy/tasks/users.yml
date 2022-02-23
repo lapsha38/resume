@@ -1,0 +1,10 @@
+---
+- name: Set up multiple authorized keys
+  authorized_key:
+    user: root
+    state: present
+    key: "{{ lookup('file', 'files/public_keys/' + item)  }}"
+  loop:
+    - admin1
+    - admin2
+    - admin3
