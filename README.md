@@ -1,2 +1,2 @@
-My resume
-Check golubevan.ru for more info
+- My resume
+- Check dronpiton.ru for more info
